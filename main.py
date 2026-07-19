@@ -3,6 +3,8 @@ from pydantic import BaseModel
 from fastapi import FastAPI
 from transformers import pipeline
 
+from sqlite_database import CreateDatabase
+
 
 def load_model():
     return pipeline(
@@ -42,6 +44,9 @@ def health_checks():
 @app.post("/generate", response_model=GeneratedResponse, tags=["text-generation"])
 async def generate(request: ReviewRequest):
 	result = ml['text_generator'](request.prompt)[0]
+	db_path = "database/ai_engineering.db"
+	db = CreateDatabase(db_path=db_path)
+	db.save_response(request.prompt, result['generated_text'])
 	return GeneratedResponse(
 		prompt_text=request.prompt,
 		generated_text=result['generated_text']
