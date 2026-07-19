@@ -8,6 +8,8 @@ from apis.models_validation import (
     SentimentResponse,
 )
 
+from apis.sqlite_database import CreateDatabase
+
 
 def load_model():
     return pipeline(
@@ -51,6 +53,9 @@ def health_checks():
 @app.post("/generate_text", response_model=GeneratedResponse, tags=["text-generation"])
 async def generate(request: ReviewRequest):
     result = ml['text_generator'](request.prompt)[0]
+    db_path = "../database/ai_engineering.db"
+    db = CreateDatabase(db_path=db_path)
+    db.save_response_text_gen(request.prompt, result["generated_text"])
     return GeneratedResponse(
         prompt_text=request.prompt,
         generated_text=result["generated_text"]
@@ -60,6 +65,9 @@ async def generate(request: ReviewRequest):
 @app.post("/analyze_sentiment", response_model=SentimentResponse, tags=["sentiment-analysis"])
 async def analyze_sentiment(request: ReviewRequest):
     result = ml["sentiment_analyzer"](request.prompt)[0]
+    db_path = "../database/ai_engineering.db"
+    db = CreateDatabase(db_path=db_path)
+    db.save_response_sentiment(request.prompt, result["label"], float(result["score"]))
     return SentimentResponse(
         prompt_text=request.prompt,
         sentiment=result["label"],
