@@ -18,7 +18,7 @@ class CreateDatabase:
     def _check_if_db_path_exists(self):
         try:
             db_dir = os.path.dirname(self.db_path)
-            Path(db_dir).mkdir()
+            Path(db_dir).mkdir(exist_ok=True)
         except Exception as e:
             print(f"Error creating database directory: {e}")
 
