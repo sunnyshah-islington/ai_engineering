@@ -1,5 +1,8 @@
+import os
 import sqlite3
+
 from dataclasses import dataclass
+from pathlib import Path
 
 
 @dataclass
@@ -7,8 +10,17 @@ class CreateDatabase:
     db_path: str
 
     def __post_init__(self):
+        self._check_if_db_path_exists()
         self.init_text_gen_db()
         self.init_sentiment_db()
+
+
+    def _check_if_db_path_exists(self):
+        try:
+            db_dir = os.path.dirname(self.db_path)
+            Path(db_dir).mkdir()
+        except Exception as e:
+            print(f"Error creating database directory: {e}")
 
 
     def init_text_gen_db(self):
