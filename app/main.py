@@ -32,7 +32,7 @@ ml = {}
 
 
 async def lifespan(app: FastAPI):
-    ml["text_generator"] = load_model()
+    # ml["text_generator"] = load_model()
     ml["sentiment_analyzer"] = load_ai_sentiment_model()
     yield
     ml.clear()
