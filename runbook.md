@@ -12,23 +12,33 @@ source .venv/bin/activate
 
 ### Step 3: Install `fastapi[standard]` and `transformers[torch]`
 ```bash
-uv pip install "fastapi[standard]" "transformers[torch]"
+uv pip compile requirements.in -o requirements.txt && uv pip install -r requirements.txt
 ```
 
 ### Step 4: Start FastAPI server 
+`main.py` file is inside the folder `apis`
 ```bash
+cd apis
 fastapi dev
 ```
 The server should be running after this command
 
 ### Step 5: Hit the API started by FastAPI
 Once the server is running open another `terminal` and send the request below
+
+For text generator
 ```bash
-curl -X POST http://127.0.0.1:8000/generate \
+curl -X POST http://127.0.0.1:8000/generate_text \
   -H "Content-Type: application/json" \
   -d '{"prompt": "<YOUR PROMPT HERE>"}'
 ```
-OR 
+For sentiment analysis
+```bash
+curl -X POST http://127.0.0.1:8000/analyze_sentiment \
+  -H "Content-Type: application/json"\
+  -d '{"prompt": "<YOUR PROMPT HERE>"}'
+```
+OR
 
 If you wish to use `Postman` send a `POST` request
 
