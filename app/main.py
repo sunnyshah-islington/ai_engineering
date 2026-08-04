@@ -1,14 +1,14 @@
 from fastapi import FastAPI
 from transformers import pipeline
 
-from apis.models_validation import (
+from app.models_validation import (
     ModelStatus,
     ReviewRequest,
     GeneratedResponse,
     SentimentResponse,
 )
 
-from apis.sqlite_database import CreateDatabase
+from app.sqlite_database import CreateDatabase
 
 
 DB_PATH = "./database/ai_engineering.db"
@@ -32,7 +32,7 @@ ml = {}
 
 
 async def lifespan(app: FastAPI):
-    ml["text_generator"] = load_model()
+    # ml["text_generator"] = load_model()
     ml["sentiment_analyzer"] = load_ai_sentiment_model()
     yield
     ml.clear()
