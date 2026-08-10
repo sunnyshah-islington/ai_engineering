@@ -13,7 +13,8 @@ ENV PATH="/root/.local/bin:${PATH}"
 
 # Install dependencies first so this layer is cached unless requirements change
 COPY requirements.in .
-RUN uv pip compile requirements.in -o requirements.txt \
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip compile requirements.in -o requirements.txt \
     && uv pip sync requirements.txt --system
 
 COPY app ./app/

@@ -3,3 +3,4 @@ __pycache__
 requirements.txt
 database
 *.pyc
+.env

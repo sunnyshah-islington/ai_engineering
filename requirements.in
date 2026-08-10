@@ -1,2 +1,4 @@
 transformers[torch]
 fastapi[standard]
+psycopg2-binary
+python-dotenv
